@@ -1,0 +1,11 @@
+type atom, list
+
+symbol P : atom+
+       O : atom+
+       L : atom+
+       Cons : list+; atom-, list-
+       Nil : list+
+       Append : list-; list-, list+
+       
+Cons[x, Append(v, t)] >< Append[v, Cons(x, t)]
+                  Nil >< Append[v, v]

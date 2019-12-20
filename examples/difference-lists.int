@@ -1,0 +1,8 @@
+type list, d_list
+
+symbol Diff : d_list+; {list-, list+}
+       D_append : d_list-; d_list-, d_list+
+       Open : d_list-; list-, list+
+
+Diff[x, y] >< D_append[Open(t, y), Diff(x, t)]
+Diff[x, y] >< Open[y, x]

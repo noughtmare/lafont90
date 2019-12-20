@@ -1,0 +1,28 @@
+type nat
+
+symbol  0 : nat+
+        S : nat+; nat-
+        Add : nat-; nat-, nat+
+        Mult : nat-; nat-, nat+
+        Dupl : nat-; {nat+, nat+}
+        Erase : nat-; {}
+        Max : nat-; nat-, nat+
+        Aux : nat-; nat-, nat+
+
+                       0 >< Add[y, y]
+             S[Add(y,t)] >< Add[y, S(t)]
+
+                       0 >< Mult[Erase, 0]
+S[Mult(y', Add(y'', z))] >< Mult[Dupl(y', y''), z]
+
+                       0 >< Dupl[0, 0]
+        S[Dupl(x', x'')] >< Dupl[S(x'), S(x'')]
+
+                       0 >< Erase
+                S[Erase] >< Erase
+
+                       0 >< Max[y, y]
+                    S[x] >< Max[Aux(x, z), z]
+
+                       0 >< Aux[x, S(x)]
+                    S[y] >< Aux[Max(y, t), S(t)]

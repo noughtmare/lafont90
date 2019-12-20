@@ -1,0 +1,11 @@
+type a, b, c
+
+symbol This : a+
+       B : a-
+       0 : c+
+       C : c-; b+, b-
+       D : c-
+
+This >< B
+
+0 >< C[a,a]
