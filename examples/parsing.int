@@ -8,3 +8,8 @@ symbol + : stream+; stream-
 
 +[Parse(v, Parse(w,y))] >< Parse[Plus(v, w), y]
                    1[x] >< Parse[One, x]
+                   
+                   
+// main <- And(u, y)
+//
+// Parse(u, y) -><- +(1(1(End)))

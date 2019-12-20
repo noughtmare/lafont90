@@ -6,3 +6,5 @@ symbol Diff : d_list+; {list-, list+}
 
 Diff[x, y] >< D_append[Open(t, y), Diff(x, t)]
 Diff[x, y] >< Open[y, x]
+
+// Diff(Cons(P,(Cons(O,Cons(P,y)))),y) -><- D_append(Diff(Cons(L, x), x), main) 

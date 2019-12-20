@@ -9,3 +9,5 @@ symbol P : atom+
        
 Cons[x, Append(v, t)] >< Append[v, Cons(x, t)]
                   Nil >< Append[v, v]
+                  
+// Cons(P,Cons(O,Cons(P,Nil))) -><- Append(Cons(L,Nil), main)
