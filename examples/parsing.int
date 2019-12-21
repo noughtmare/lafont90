@@ -11,4 +11,4 @@ symbol + : stream+; stream-
                    1[x] >< Parse[One, x]
                    
                    
-init Parse(Print, Print) -><- +(1(1(End)))
+init Parse(Print, Print) = +(1(1(End)))

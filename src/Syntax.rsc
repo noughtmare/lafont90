@@ -21,4 +21,4 @@ syntax IntRule = IntTree "\>\<" IntTree;
 syntax IntTree = Sym ("[" {IntExpr ","}+ "]")?;
 syntax IntExpr = Sym ("(" {IntExpr ","}+ ")")? | Port;
 
-syntax ActivePair = IntExpr "-\>" "\<-" IntExpr;
+syntax ActivePair = IntExpr "=" IntExpr;

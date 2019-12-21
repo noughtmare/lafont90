@@ -91,7 +91,7 @@ AIntExpr cst2ast(IntExpr ie) {
 
 AActivePair cst2ast(ActivePair ap) {
   switch (ap) {
-    case (ActivePair)`<IntExpr lhs> -\> \<- <IntExpr rhs>`:
+    case (ActivePair)`<IntExpr lhs> = <IntExpr rhs>`:
       return activePair(cst2ast(lhs), cst2ast(rhs));
     default: throw "Error!";
   }

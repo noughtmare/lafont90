@@ -5,6 +5,10 @@ import Message;
 import Set;
 import List;
 
+// TODO: 
+// * check missing interaction rules 
+// * check ports & types in initial net definition
+
  set[Message] check(ANet n) =
    checkDuplicateSymDecls(n.symDecls) +
    checkUnusedTypes(n) +

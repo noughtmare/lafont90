@@ -10,4 +10,4 @@ This >< B
 
 0 >< C[a,a]
 
-init Print -><- 0
+init Print = 0

@@ -11,4 +11,4 @@ symbol P : atom+
 Diff[x, y] >< D_append[Open(t, y), Diff(x, t)]
 Diff[x, y] >< Open[y, x]
 
-init Diff(Cons(P,Cons(O,Cons(P,y))),y) -><- D_append(Diff(Cons(L, x), x), Print) 
+init Diff(Cons(P,Cons(O,Cons(P,y))),y) = D_append(Diff(Cons(L, x), x), Print) 
