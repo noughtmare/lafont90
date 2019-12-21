@@ -1,10 +1,14 @@
-type list, d_list
+type atom, list, d_list
 
-symbol Diff : d_list+; {list-, list+}
+symbol P : atom+
+       O : atom+
+       L : atom+
+       Diff : d_list+; {list-, list+}
        D_append : d_list-; d_list-, d_list+
        Open : d_list-; list-, list+
+       Cons : list+; atom-, list-
 
 Diff[x, y] >< D_append[Open(t, y), Diff(x, t)]
 Diff[x, y] >< Open[y, x]
 
-// Diff(Cons(P,(Cons(O,Cons(P,y)))),y) -><- D_append(Diff(Cons(L, x), x), main) 
+init Diff(Cons(P,Cons(O,Cons(P,y))),y) -><- D_append(Diff(Cons(L, x), x), Print) 

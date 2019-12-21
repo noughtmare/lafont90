@@ -9,6 +9,8 @@ import List;
    checkDuplicateSymDecls(n.symDecls) +
    checkUnusedTypes(n) +
    checkUnusedSyms(n) +
+   checkUndeclaredTypes(n) +
+   checkUndeclaredSyms(n) +
    checkIntRuleLeftPrimaryPortTypeIsOutput(n) +
    checkIntRuleRightPrimaryPortTypeIsInput(n) +
    checkIntRulePrimaryTypes(n) +
@@ -26,14 +28,27 @@ set[Message] checkDuplicateSymDecls(set[ASymDecl] sds) =
 
 set[Message] checkUnusedTypes(ANet n) =
   { warning("Unused type: \'<name>\'", src)
-  | / t:\type(str name, src = src) := n
+  | / t:\type(str name, src = src) := n.typeDecls
   , !(/ t := n.symDecls)
   };
 
 set[Message] checkUnusedSyms(ANet n) =
   { warning("Unused symbol: \'<name>\'", src)
-  | / s:sym(str name, src = src) := n
-  , !(/ s := n.intRules)
+  | / s:sym(str name, src = src) := n.symDecls
+  , !(/ s <- n.intRules + n.activePairs)
+  };
+  
+set[Message] checkUndeclaredTypes(ANet n) =
+  { error("Undeclared type: \'<name>\'", src)
+  | / t:\type(str name, src = src) := n.symDecls
+  , !(/ t := n.typeDecls)
+  };
+  
+set[Message] checkUndeclaredSyms(ANet n) =
+  { error("Undeclared symbol: \'<name>\'", src)
+  | / s:sym(str name, src = src) := n.intRules + n.activePairs
+  , !(/ s := n.symDecls)
+  , name != "Print" // Print is built-in
   };
 
 set[Message] checkIntRuleLeftPrimaryPortTypeIsOutput(ANet n) =

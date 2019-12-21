@@ -10,11 +10,12 @@ ANet cst2ast(start[Net] sn) = cst2ast(sn.top);
 
 ANet cst2ast(Net n) {
   switch (n) {
-    case (Net)`type <{Type ","}* ts> symbol <SymDecl* sds> <IntRule* irs>`:
+    case (Net)`type <{Type ","}* ts> symbol <SymDecl* sds> <IntRule* irs> init <ActivePair+ aps>`:
       return net(
         {cst2ast(t) | Type t <- ts},
         {cst2ast(sd) | SymDecl sd <- sds},
         {cst2ast(ir) | IntRule ir <- irs},
+        {cst2ast(ap) | ActivePair ap <- aps},
         src = n@\loc);
     default: throw "Error";
   }
@@ -85,6 +86,14 @@ AIntExpr cst2ast(IntExpr ie) {
     case (IntExpr)`<Port p>`:
       return var(cst2ast(p), src = ie@\loc); 
     default: throw "Error";
+  }
+}
+
+AActivePair cst2ast(ActivePair ap) {
+  switch (ap) {
+    case (ActivePair)`<IntExpr lhs> -\> \<- <IntExpr rhs>`:
+      return activePair(cst2ast(lhs), cst2ast(rhs));
+    default: throw "Error!";
   }
 }
 

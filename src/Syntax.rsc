@@ -7,9 +7,10 @@ lexical Port = [a-z] !<< [a-z][a-z \']* !>> [a-z \'];
 lexical Sym = [A-Z 0-9 _ +] !<< [A-Z 0-9 _ +][A-Z a-z 0-9 _ +]* !>> [A-Z a-z 0-9 _ +];
 
 start syntax Net
-  = "type" { Type "," }* !>> "," "symbol" 
-    SymDecl* !>> SymDecl
-    IntRule* !>> IntRule;
+  = "type" { Type "," }* !>> ","
+    "symbol" SymDecl* !>> SymDecl
+    IntRule* !>> IntRule
+    "init" ActivePair+ !>> ActivePair;
 
 syntax SymDecl = Sym ":" TypeExpr;
 syntax TypeExpr = TypeAtom (";" {Part ","}+)?;
@@ -19,3 +20,5 @@ syntax TypeAtom = Type [+\-];
 syntax IntRule = IntTree "\>\<" IntTree;
 syntax IntTree = Sym ("[" {IntExpr ","}+ "]")?;
 syntax IntExpr = Sym ("(" {IntExpr ","}+ ")")? | Port;
+
+syntax ActivePair = IntExpr "-\>" "\<-" IntExpr;
