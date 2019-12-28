@@ -15,7 +15,7 @@ ANet cst2ast(Net n) {
         {cst2ast(t) | Type t <- ts},
         {cst2ast(sd) | SymDecl sd <- sds},
         {cst2ast(ir) | IntRule ir <- irs},
-        {cst2ast(ap) | ActivePair ap <- aps},
+        [cst2ast(ap) | ActivePair ap <- aps],
         src = n@\loc);
     default: throw "Error";
   }
@@ -84,24 +84,18 @@ AIntExpr cst2ast(IntExpr ie) {
     case (IntExpr)`<Sym s>(<{IntExpr ","}+ args>)`:
       return app(cst2ast(s), [cst2ast(arg) | IntExpr arg <- args], src = ie@\loc);
     case (IntExpr)`<Port p>`:
-      return var(cst2ast(p), src = ie@\loc); 
+      return var("<p>", src = ie@\loc); 
     default: throw "Error";
   }
 }
+
+AIntTree expr2tree(app(ASym s, list[AIntExpr] args)) = intTree(s,args);
 
 AActivePair cst2ast(ActivePair ap) {
   switch (ap) {
     case (ActivePair)`<IntExpr lhs> = <IntExpr rhs>`:
-      return activePair(cst2ast(lhs), cst2ast(rhs));
+      return activePair(expr2tree(cst2ast(lhs)), expr2tree(cst2ast(rhs)));
     default: throw "Error!";
-  }
-}
-
-APort cst2ast(Port p) {
-  switch (p) {
-    case (Port)`<Port name>`:
-      return port("<name>", src = p@\loc);
-    default: throw "Error";
   }
 }
 

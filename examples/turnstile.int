@@ -1,0 +1,8 @@
+type a
+
+symbol Turn : a-; a-
+       Stile : a+
+
+Stile >< Turn[Turn(Stile)]
+
+init Stile = Turn(Stile)

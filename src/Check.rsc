@@ -99,10 +99,10 @@ set[Message] checkVarTypes(ANet n) = union(
   { {error("Var types do not match", src1), error("Var types do not match", src2)}
   | ir <- n.intRules
   , <ASym s1, list[AIntExpr] l1> <- ({ <s, l> | /intTree(ASym s, list[AIntExpr] l) := ir} + { <s, l> | /app(ASym s, list[AIntExpr] l) := ir })
-  , <int i1, var(APort v1, src = loc src1)> <- zip(index(l1), l1)
+  , <int i1, var(str name1, src = loc src1)> <- zip(index(l1), l1)
   , <ASym s2, list[AIntExpr] l2> <- ({ <s, l> | /intTree(ASym s, list[AIntExpr] l) := ir} + { <s, l> | /app(ASym s, list[AIntExpr] l) := ir })
-  , <int i2, var(APort v2, src = loc src2)> <- zip(index(l2), l2)
-  , v1.name == v2.name && v1.src.offset < v2.src.offset
+  , <int i2, var(str name2, src = loc src2)> <- zip(index(l2), l2)
+  , name1 == name2 && src1.offset < src2.offset
   , symDecl(s1, typeExpr(_, list[list[ATypeAtom]] ts1)) <- n.symDecls
   , symDecl(s2, typeExpr(_, list[list[ATypeAtom]] ts2)) <- n.symDecls
   , concat(ts1)[i1].\type.name != concat(ts2)[i2].\type.name || concat(ts1)[i1].isOutput != concat(ts1)[i1].isOutput

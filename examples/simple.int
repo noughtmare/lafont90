@@ -1,0 +1,8 @@
+type a
+
+symbol Construct : a+
+       Destruct : a-
+       
+Construct >< Destruct
+
+init Construct = Destruct

@@ -1,7 +1,7 @@
 module AST
 
 data ANet(loc src = |tmp:///|)
-  = net(set[AType] typeDecls, set[ASymDecl] symDecls, set[AIntRule] intRules, set[AActivePair] activePairs);
+  = net(set[AType] typeDecls, set[ASymDecl] symDecls, set[AIntRule] intRules, list[AActivePair] activePairs);
 
 data ASymDecl(loc src = |tmp:///|)
   = symDecl(ASym s, ATypeExpr typeExpr);
@@ -20,11 +20,10 @@ data AIntTree(loc src = |tmp:///|)
 
 data AIntExpr(loc src = |tmp:///|)
   = app(ASym s, list[AIntExpr] args)
-  | var(APort p);
+  | var(str name);
 
 data AActivePair(loc src = |tmp:///|)
-  = activePair(AIntExpr lhs, AIntExpr rhs);
+  = activePair(AIntTree lhs, AIntTree rhs);
 
-data APort(loc src = |tmp:///|) = port(str name);
 data ASym(loc src = |tmp:///|) = sym(str name);
 data AType(loc src = |tmp:///|) = \type(str name);
