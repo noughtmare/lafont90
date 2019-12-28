@@ -4,14 +4,11 @@ import AST;
 import List;
 import IO;
 import Set;
-// import Resolve; TODO: figure out why this import was here
 
 /*
- * Implement big-step semantics for QL
+ * Example usage:
  */
  
-// NB: Eval may assume the form is type- and name-correct.
-
 /*
 import ParseTree;
 import Syntax;
@@ -151,52 +148,3 @@ void eval(list[AActivePair] activePairs, set[AIntRule] rules) {
     }
   }
 }
-
-//// Semantic domain for expressions (values)
-//data Value
-//  = vint(int n)
-//  | vbool(bool b)
-//  | vstr(str s)
-//  ;
-//
-//// The value environment
-//alias VEnv = map[str name, Value \value];
-//
-//// Modeling user input
-//data Input
-//  = input(str question, Value \value);
-//  
-//// produce an environment which for each question has a default value
-//// (e.g. 0 for int, "" for str etc.)
-//VEnv initialEnv(AForm f) {
-//  VEnv res = (); 
-//  return res;
-//}
-//
-//
-//// Because of out-of-order use and declaration of questions
-//// we use the solve primitive in Rascal to find the fixpoint of venv.
-//VEnv eval(AForm f, Input inp, VEnv venv) {
-//  solve (venv) {
-//    venv = evalOnce(f, inp, venv);
-//  };
-//  return venv;
-//}
-//
-//VEnv evalOnce(AForm f, Input inp, VEnv venv) {
-//}
-//
-//VEnv eval(AQuestion q, Input inp, VEnv venv) {
-//  // evaluate conditions for branching,
-//  // evaluate inp and computed questions to return updated VEnv
-//  
-//  switch (q) {
-//    default: throw "Unhandled: <q>"; 
-//  }
-//}
-//
-//Value eval(AExpr e, VEnv venv) {
-//  switch (e) {
-//    default: throw "Unsupported expression <e>";
-//  }
-//}
