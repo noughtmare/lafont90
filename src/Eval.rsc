@@ -63,7 +63,7 @@ AIntExpr uniqify(AIntExpr x, set[str] vars) {
       }
       return var(name + "<i>");
     }
-    default: throw "Unhandled: <X>";
+    default: throw "Unhandled: <x>";
   }
 }
 
