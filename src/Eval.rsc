@@ -91,7 +91,7 @@ void eval(list[AActivePair] activePairs, set[AIntRule] rules) {
     list[AIntExpr] largs, rargs;
     <activePair(intTree(ls,largs), intTree(rs,rargs)), activePairs> = pop(activePairs);
     if (intRule(intTree(ls, list[AIntExpr] laux), intTree(rs, list[AIntExpr] raux)) <- rules) {
-      println("Resolving: <ls.name> \>\< <rs.name>");
+      //println("Resolving: <ls.name> \>\< <rs.name>");
       // make names unique
       laux = mapper(laux, AIntExpr (AIntExpr x) { return uniqify(x, variables); });
       raux = mapper(raux, AIntExpr (AIntExpr x) { return uniqify(x, variables); });
@@ -119,7 +119,7 @@ void eval(list[AActivePair] activePairs, set[AIntRule] rules) {
       for (tuple[AIntExpr, AIntExpr] t <- connections) {
         switch (t) {
           case <app(ASym s1, list[AIntExpr] args1),app(ASym s2, list[AIntExpr] args2)>: {
-            println("Adding: <s1.name> \>\< <s2.name>");
+            //println("Adding: <s1.name> \>\< <s2.name>");
             if (s1 > s2) {
               activePairs = push(activePair(intTree(s2, args2), intTree(s1, args1)), activePairs);
             } else {
