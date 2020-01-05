@@ -6,8 +6,17 @@ symbol P : atom+
        Cons : list+; atom-, list-
        Nil : list+
        Append : list-; list-, list+
-       
-Cons[x, Append(v, t)] >< Append[v, Cons(x, t)]
-                  Nil >< Append[v, v]
-                  
-init Cons(P,Cons(O,Cons(P,Nil))) = Append(Cons(L,Nil), Print)
+       DestroyAtom : atom-
+       DestroyList : list-
+
+                             P >< DestroyAtom
+                             O >< DestroyAtom
+                             L >< DestroyAtom
+
+Cons[DestroyAtom, DestroyList] >< DestroyList
+                           Nil >< DestroyList
+
+         Cons[x, Append(v, t)] >< Append[v, Cons(x, t)]
+                           Nil >< Append[v, v]
+
+init Cons(P,Cons(O,Cons(P,Nil))) = Append(Cons(L,Nil), DestroyList)
