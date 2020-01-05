@@ -27,5 +27,5 @@ S[Mult(y', Add(y'', z))] >< Mult[Dupl(y', y''), z]
                        0 >< Aux[x, S(x)]
                     S[y] >< Aux[Max(y, t), S(t)]
 
-init S(S(0)) = Mult(S(S(S(0))), Max(u, Print))
+init S(S(0)) = Mult(S(S(S(0))), Max(u, Erase))
      S(S(0)) = Add(S(S(S(0))), u)

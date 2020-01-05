@@ -7,8 +7,20 @@ symbol P : atom+
        D_append : d_list-; d_list-, d_list+
        Open : d_list-; list-, list+
        Cons : list+; atom-, list-
+       Nil : list+
+       Destroy_Atom : atom-
+       Destroy_D_List : d_list-
+       Destroy_List : list-
+    
+                               P >< Destroy_Atom
+                               O >< Destroy_Atom
+                               L >< Destroy_Atom
 
-Diff[x, y] >< D_append[Open(t, y), Diff(x, t)]
-Diff[x, y] >< Open[y, x]
+Cons[Destroy_Atom, Destroy_List] >< Destroy_List
+                             Nil >< Destroy_List
 
-init Diff(Cons(P,Cons(O,Cons(P,y))),y) = D_append(Diff(Cons(L, x), x), Print) 
+         Diff[Destroy_List, Nil] >< Destroy_D_List
+                      Diff[x, y] >< D_append[Open(t, y), Diff(x, t)]
+                      Diff[x, y] >< Open[y, x]
+
+init Diff(Cons(P,Cons(O,Cons(P,y))),y) = D_append(Diff(Cons(L, x), x), Destroy_D_List) 

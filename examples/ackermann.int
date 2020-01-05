@@ -8,10 +8,10 @@ symbol Ack : nat-; nat-, nat+
        0 : nat+
        Destroy : nat-
        Dup : nat-; nat+, nat+
-       
+
                   0 >< Dup[0, 0]
         S[Dup(x,y)] >< Dup[S(x), S(y)]
-               
+
                   0 >< Add[x,x] 
         S[Add(x,y)] >< Add[x,S(y)]
 
@@ -26,5 +26,5 @@ S[Mult(x,Add(z,y))] >< Mult[z, y]
 
                   0 >< Ack_[Ack(S(0), y), y]
       S[Ack_(x, z)] >< Ack_[Dup(Ack(z, y), x), y]
-       
-init S(S(S(0))) = Ack(S(S(S(S(0)))), Print)
+
+init S(S(S(0))) = Ack(S(S(S(S(S(S(S(S(0)))))))), Destroy)
