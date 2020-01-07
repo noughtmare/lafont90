@@ -89,12 +89,12 @@ AIntExpr cst2ast(IntExpr ie) {
   }
 }
 
-AIntTree expr2tree(app(ASym s, list[AIntExpr] args)) = intTree(s,args);
+AIntTree expr2tree(app(ASym s, list[AIntExpr] args, src = loc src)) = intTree(s,args, src = src);
 
 AActivePair cst2ast(ActivePair ap) {
   switch (ap) {
     case (ActivePair)`<IntExpr lhs> = <IntExpr rhs>`:
-      return activePair(expr2tree(cst2ast(lhs)), expr2tree(cst2ast(rhs)));
+      return activePair(expr2tree(cst2ast(lhs)), expr2tree(cst2ast(rhs)), src = ap@\loc);
     default: throw "Error!";
   }
 }
