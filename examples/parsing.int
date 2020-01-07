@@ -19,4 +19,4 @@ symbol P : stream+; stream-
 Plus[Destroy_Tree, Destroy_Tree] >< Destroy_Tree
                              One >< Destroy_Tree
                              
-init Parse(Destroy_Tree, Destroy_Stream) = P(1(1(End)))
+init P(1(1(End))) = Parse(Destroy_Tree, Destroy_Stream)
