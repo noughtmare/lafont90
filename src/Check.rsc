@@ -5,23 +5,24 @@ import Message;
 import Set;
 import List;
 
-// TODO: 
-// * check missing interaction rules 
-// * check ports & types in initial net definition
+
 
  set[Message] check(ANet n) =
    checkDuplicateSymDecls(n.symDecls) +
    checkUnusedTypes(n) +
    checkUnusedSyms(n) +
+   checkUnmatchedSyms(n) +
    checkUndeclaredTypes(n) +
    checkUndeclaredSyms(n) +
-   checkIntRuleLeftPrimaryPortTypeIsOutput(n) +
-   checkIntRuleRightPrimaryPortTypeIsInput(n) +
-   checkIntRulePrimaryTypes(n) +
+   checkIRandAPLeftPrimaryPortTypeIsOutput(n) +
+   checkIRandAPRightPrimaryPortTypeIsInput(n) +
+   checkIRandAPPrimaryTypes(n) +
    union({checkVarOccursTwice(ir) | ir <- n.intRules}) +
+   union({checkVarOccursTwice(ar) | ar <- n.activePairs}) +
    checkSymbolArity(n) +
    checkVarTypes(n) +
-   checkPrimaryTypes(n);
+   checkPrimaryTypes(n) +
+   checkPrimaryTypesAR(n);
 
 set[Message] checkDuplicateSymDecls(set[ASymDecl] sds) =
   { error("Duplicate symbol declaration: \'<s.name>\'", src2)
@@ -42,6 +43,17 @@ set[Message] checkUnusedSyms(ANet n) =
   , !(/ s <- n.intRules + n.activePairs)
   };
   
+set[Message] checkUnmatchedSyms(ANet n) =
+  { warning("Missing interaction rule: 
+          '  \'<s1>\' and \'<s2>\' do not have an interaction rule", src)
+  | symDecl(sym(str s1), typeExpr(atom(\type(str typeName), bool isOutput1), _), src = src) <- n.symDecls
+  , symDecl(sym(str s2), typeExpr(atom(\type(typeName), bool isOutput2), _)) <- n.symDecls
+  , s1 != s2
+  , isOutput1 == true
+  , isOutput1 != isOutput2  
+  , !(/ intRule(intTree(sym(s1), _), intTree(sym(s2), _)) <- n.intRules)
+  };
+  
 set[Message] checkUndeclaredTypes(ANet n) =
   { error("Undeclared type: \'<name>\'", src)
   | / t:\type(str name, src = src) := n.symDecls
@@ -55,23 +67,39 @@ set[Message] checkUndeclaredSyms(ANet n) =
   , name != "Print" // Print is built-in
   };
 
-set[Message] checkIntRuleLeftPrimaryPortTypeIsOutput(ANet n) =
+set[Message] checkIRandAPLeftPrimaryPortTypeIsOutput(ANet n) =
   { error("Left primary port is not an output port", src)
   | intRule(intTree(sym(str s), _, src = src), _) <- n.intRules
   , symDecl(sym(s), typeExpr(atom(_,bool b), _)) <- n.symDecls && !b
+  } +
+  {error("Left primary port is not an output port", src)
+  | activePair(intTree(sym(str s), _, src = src), _) <- n.activePairs
+  , symDecl(sym(s), typeExpr(atom(_,bool b), _)) <- n.symDecls && !b
   };
 
-set[Message] checkIntRuleRightPrimaryPortTypeIsInput(ANet n) =
+set[Message] checkIRandAPRightPrimaryPortTypeIsInput(ANet n) =
   { error("Right primary port is not an input port", src)
   | intRule(_, intTree(sym(str s), _, src = src)) <- n.intRules
   , symDecl(sym(s), typeExpr(atom(_,bool b), _)) <- n.symDecls && b
+  } +
+  {error("Right primary port is not an input port", src)
+  | activePair(_, intTree(sym(str s), _, src = src)) <- n.activePairs
+  , symDecl(sym(s), typeExpr(atom(_,bool b), _)) <- n.symDecls && b
   };
 
-set[Message] checkIntRulePrimaryTypes(ANet n) =
+set[Message] checkIRandAPPrimaryTypes(ANet n) =
   { error("Primary port types do not match: 
           '  \'<s1>\' has primary port type \'<name1>\'
           '  \'<s2>\' has primary port type \'<name2>\'", src)
   | intRule(intTree(sym(str s1), _), intTree(sym(str s2), _), src = src) <- n.intRules
+  , symDecl(sym(s1), typeExpr(atom(\type(str name1), _), _)) <- n.symDecls
+  , symDecl(sym(s2), typeExpr(atom(\type(str name2), _), _)) <- n.symDecls
+  , name1 != name2
+  } +
+  { error("Primary port types do not match: 
+          '  \'<s1>\' has primary port type \'<name1>\'
+          '  \'<s2>\' has primary port type \'<name2>\'", src)
+  | activePair(intTree(sym(str s1), _), intTree(sym(str s2), _), src = src) <- n.activePairs
   , symDecl(sym(s1), typeExpr(atom(\type(str name1), _), _)) <- n.symDecls
   , symDecl(sym(s2), typeExpr(atom(\type(str name2), _), _)) <- n.symDecls
   , name1 != name2
@@ -81,6 +109,12 @@ set[Message] checkVarOccursTwice(AIntRule ir) =
   { error("Variable \'<name>\' does not occur twice", ir.src)
   | / var(port(str name)) := ir
   , size([() | / var(port(name)) := ir]) != 2
+  };
+  
+set[Message] checkVarOccursTwice(AActivePair ar) =
+  { error("Variable \'<name>\' does not occur twice", ar.src)
+  | / var(port(str name)) := ar
+  , size([() | / var(port(name)) := ar]) != 2
   };
 
 set[Message] checkSymbolArity(ANet n) =
@@ -97,7 +131,7 @@ set[Message] checkSymbolArity(ANet n) =
 
 set[Message] checkVarTypes(ANet n) = union(
   { {error("Var types do not match", src1), error("Var types do not match", src2)}
-  | ir <- n.intRules
+  | ir <- n.intRules + n.activePairs
   , <ASym s1, list[AIntExpr] l1> <- ({ <s, l> | /intTree(ASym s, list[AIntExpr] l) := ir} + { <s, l> | /app(ASym s, list[AIntExpr] l) := ir })
   , <int i1, var(str name1, src = loc src1)> <- zip(index(l1), l1)
   , <ASym s2, list[AIntExpr] l2> <- ({ <s, l> | /intTree(ASym s, list[AIntExpr] l) := ir} + { <s, l> | /app(ASym s, list[AIntExpr] l) := ir })
@@ -106,11 +140,11 @@ set[Message] checkVarTypes(ANet n) = union(
   , symDecl(s1, typeExpr(_, list[list[ATypeAtom]] ts1)) <- n.symDecls
   , symDecl(s2, typeExpr(_, list[list[ATypeAtom]] ts2)) <- n.symDecls
   , concat(ts1)[i1].\type.name != concat(ts2)[i2].\type.name || concat(ts1)[i1].isOutput != concat(ts1)[i1].isOutput
-  });
+  } );
   
 set[Message] checkPrimaryTypes(ANet n) =
   { error("Primary types do not match", src)
-  | ir <- n.intRules
+  | ir <- n.intRules 
   , /intTree(ASym s1, list[AIntExpr] l) := ir
   , <int i, app(ASym s2, _, src = loc src)> <- zip(index(l), l)
   , symDecl(s1, typeExpr(_, list[list[ATypeAtom]] ts)) <- n.symDecls
@@ -118,8 +152,18 @@ set[Message] checkPrimaryTypes(ANet n) =
   , concat(ts)[i].\type.name != t.\type.name || concat(ts)[i].isOutput != t.isOutput
   } +
   { error("Primary types do not match", src)
-  | ir <- n.intRules
+  | ir <- n.intRules + n.activePairs
   , /app(ASym s1, list[AIntExpr] l) := ir
+  , <int i, app(ASym s2, _, src = loc src)> <- zip(index(l), l)
+  , symDecl(s1, typeExpr(_, list[list[ATypeAtom]] ts)) <- n.symDecls
+  , symDecl(s2, typeExpr(ATypeAtom t, _)) <- n.symDecls
+  , concat(ts)[i].\type.name != t.\type.name || concat(ts)[i].isOutput == t.isOutput
+  };
+  
+set[Message] checkPrimaryTypesAR(ANet n) =
+  { error("Primary type or port do not match", src)
+  | ir <- n.activePairs
+  , /intTree(ASym s1, list[AIntExpr] l) := ir
   , <int i, app(ASym s2, _, src = loc src)> <- zip(index(l), l)
   , symDecl(s1, typeExpr(_, list[list[ATypeAtom]] ts)) <- n.symDecls
   , symDecl(s2, typeExpr(ATypeAtom t, _)) <- n.symDecls
