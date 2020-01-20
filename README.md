@@ -61,16 +61,12 @@ Currently, the compiled programs do not have any input or output capabilities.
 They only print the interactions that occur to the standard output. This can
 easily be changed manually after generating the C source files.
 
-[1] Lafont, Yves. "Interaction nets." Proceedings of the 17th ACM
+* [1] Lafont, Yves. "Interaction nets." Proceedings of the 17th ACM
 SIGPLAN-SIGACT symposium on Principles of programming languages. ACM, 1989.
-
-[2] Lafont, Yves. "Interaction combinators." Information and Computation
+* [2] Lafont, Yves. "Interaction combinators." Information and Computation
 137.1 (1997): 69-101.
-
-[3] Mackie, Ian. "Towards a programming language for interaction nets."
+* [3] Mackie, Ian. "Towards a programming language for interaction nets."
 Electronic Notes in Theoretical Computer Science 127.5 (2005): 133-151.
-
-[4] Wikipedia contributors. "Ackermann function." Wikipedia, The Free
+* [4] Wikipedia contributors. "Ackermann function." Wikipedia, The Free
 Encyclopedia. Wikipedia, The Free Encyclopedia, 10 Sep. 2019. Web. 20 Jan. 2020.
-
-[5] "Difference list." HaskellWiki, . 1 Aug 2018, 16:40 UTC. 20 Jan 2020, 18:25 <https://wiki.haskell.org/index.php?title=Difference_list&oldid=62571>. 
+* [5] "Difference list." HaskellWiki, . 1 Aug 2018, 16:40 UTC. 20 Jan 2020, 18:25 <https://wiki.haskell.org/index.php?title=Difference_list&oldid=62571>. 
