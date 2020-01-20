@@ -7,6 +7,7 @@ type error, unusedtype, unusedsymtype, unmatchedtype
 symbol  Base : error+
 		Multiple : error-; error-, error+
         End : error-
+        VariableTypesError : error+; unmatchedtype+
 
 	//Declaration errors
 		//Duplicate symbol declaration
@@ -23,7 +24,7 @@ symbol  Base : error+
 			//Interaction rule errors
 			//These also hold for the active pairs
 				//Undeclared Symbol usage
-			                   Base >< UndeclaredSymbol
+			      UndeclaredTypeSym >< UndeclaredSymbol
 				//Incorrect Input and Output port
 				 		        End >< Base
 				//Unmatched Input and output type 
@@ -32,10 +33,16 @@ symbol  Base : error+
 						       Base >< Multiple[y]
 				//Incorrect argument type
 						       Base >< Multiple[Unmatchedsymbol2, y]
-						       
-				
+				//Variable used only once
+							   Base >< Multiple[x, z]
+			    //Unmatched variable types
+		      VariableTypesError[x] >< Multiple[x, Base] 
+		      
+		      
+		      
 				//Completeness for the rest of the Symbols
 							   Base >< End
+		      VariableTypesError[x] >< End 
 						
 
 init Base = Multiple(Base, u)
