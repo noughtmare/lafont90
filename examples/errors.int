@@ -28,11 +28,11 @@ symbol  Base : error+
 				//Incorrect Input and Output port
 				 		        End >< Base
 				//Unmatched Input and output type 
-						       Base >< Unmatchedsymbol
+						       Base >< Unmatchedsymbol2
 				//Incorrect argument count
-						       Base >< Multiple[y]
+						       Base >< Multiple[End]
 				//Incorrect argument type
-						       Base >< Multiple[Unmatchedsymbol2, y]
+						       Base >< Multiple[Unmatchedsymbol, Base]
 				//Variable used only once
 							   Base >< Multiple[x, z]
 			    //Unmatched variable types
@@ -42,7 +42,7 @@ symbol  Base : error+
 		      
 				//Completeness for the rest of the Symbols
 							   Base >< End
-		      VariableTypesError[x] >< End 
+		      VariableTypesError[Unmatchedsymbol] >< End 
 						
 
-init Base = Multiple(Base, u)
+init Base = Multiple(Base, End)
