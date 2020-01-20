@@ -1,0 +1,7 @@
+type a, b
+
+symbol A : a+
+       B : a-
+       C : a-
+
+init A = B
