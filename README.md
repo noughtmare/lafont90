@@ -53,7 +53,8 @@ interaction net. The initial net definition will execute indefinitely.
 * **unary-arithmetics.int** contains an implementation of unary arithmetic,
 including addition, multiplication and finding the maximum of two numbers.
 The initial net definition calculates the expression max(2 * 3, 2 + 3).
-* **warning.int** contains all possible warnings.
+* **errors.int** contains all possible warnings and errors implemented in the 
+semantics checker.
 
 Most of these example interaction net files are based on the examples in the
 original paper by Lafont [1].
