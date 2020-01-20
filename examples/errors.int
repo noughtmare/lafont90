@@ -1,0 +1,41 @@
+//Example file showing all checks performed. 
+		
+		//Unused type
+type error, unusedtype, unusedsymtype, unmatchedtype
+
+//Basic Symbols used for errors
+symbol  Base : error+
+		Multiple : error-; error-, error+
+        End : error-
+
+	//Declaration errors
+		//Duplicate symbol declaration
+		Base : error+
+		//Unused symbol declaration
+		Unusedsymbol : unusedsymtype+
+		//Interaction rule missing (Completeness)
+		Unmatchedsymbol : unmatchedtype+
+		Unmatchedsymbol2 :  unmatchedtype-
+		//Undeclared type usage
+		UndeclaredTypeSym : undeclaredtype+
+
+        
+			//Interaction rule errors
+			//These also hold for the active pairs
+				//Undeclared Symbol usage
+			                   Base >< UndeclaredSymbol
+				//Incorrect Input and Output port
+				 		        End >< Base
+				//Unmatched Input and output type 
+						       Base >< Unmatchedsymbol
+				//Incorrect argument count
+						       Base >< Multiple[y]
+				//Incorrect argument type
+						       Base >< Multiple[Unmatchedsymbol2, y]
+						       
+				
+				//Completeness for the rest of the Symbols
+							   Base >< End
+						
+
+init Base = Multiple(Base, u)
