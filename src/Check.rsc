@@ -107,14 +107,14 @@ set[Message] checkIRandAPPrimaryTypes(ANet n) =
 
 set[Message] checkVarOccursTwice(AIntRule ir) =
   { error("Variable \'<name>\' does not occur twice", ir.src)
-  | / var(port(str name)) := ir
-  , size([() | / var(port(name)) := ir]) != 2
+  | / var(str name) := ir
+  , size([() | / var(name) := ir]) != 2
   };
   
 set[Message] checkVarOccursTwice(AActivePair ar) =
   { error("Variable \'<name>\' does not occur twice", ar.src)
-  | / var(port(str name)) := ar
-  , size([() | / var(port(name)) := ar]) != 2
+  | / var(str name) := ar
+  , size([() | / var(name) := ar]) != 2
   };
 
 set[Message] checkSymbolArity(ANet n) =
