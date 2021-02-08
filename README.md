@@ -1,4 +1,4 @@
-### Lafont90
+# Lafont90
 
 In this repository we implement the interaction nets language first 
 described by Yves Lafont in 1989 [1]. Interaction nets are a model of
