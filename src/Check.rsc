@@ -123,8 +123,8 @@ set[Message] checkSymbolArity(ANet n) =
   , symDecl(sym(name), typeExpr(_, list[list[ATypeAtom]] aux)) <- n.symDecls
   , sum([0] + [size(au) | list[ATypeAtom] au <- aux]) != size(args)
   } +
-  { error("Symbol applied to too many or too few arguments", src)
-  | / intExpr(sym(name), typeExpr(_, list[AIntExpr] args)) := n
+  { error("Symbol applied to too many or too few arguments", a.src)
+  | / a:app(sym(name), list[AIntExpr] args) := n
   , symDecl(sym(name), typeExpr(_, list[list[ATypeAtom]] aux)) <- n.symDecls
   , sum([0] + [size(au) | list[ATypeAtom] au <- aux]) != size(args)
   };
