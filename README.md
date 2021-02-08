@@ -1,6 +1,6 @@
-### 2IMP20 Generic Language Technology Assignment 2
+### Lafont90
 
-For assignment 2 we chose to implement the interaction nets language first 
+In this repository we implement the interaction nets language first 
 described by Yves Lafont in 1989 [1]. Interaction nets are a model of
 computation like the lambda calculus, but even lower level. Cellular automata,
 rewrite systems and Turing machines can all be considered as a special case of
