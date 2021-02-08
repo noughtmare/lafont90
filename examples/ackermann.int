@@ -16,7 +16,7 @@ symbol Ack : nat-; nat-, nat+
         S[Add(x,y)] >< Add[x,S(y)]
 
                   0 >< Mult[Destroy, 0]
-S[Mult(x,Add(z,y))] >< Mult[z, y]
+       S[Mult(x,y)] >< Mult[Dup(Add(y,z), x), z]
 
                   0 >< Destroy
          S[Destroy] >< Destroy

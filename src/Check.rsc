@@ -18,7 +18,7 @@ import List;
    checkIRandAPRightPrimaryPortTypeIsInput(n) +
    checkIRandAPPrimaryTypes(n) +
    union({checkVarOccursTwice(ir) | ir <- n.intRules}) +
-   union({checkVarOccursTwice(ar) | ar <- n.activePairs}) +
+   checkVarsOccurTwice(n.activePairs) +
    checkSymbolArity(n) +
    checkVarTypes(n) +
    checkPrimaryTypes(n) +
@@ -106,15 +106,15 @@ set[Message] checkIRandAPPrimaryTypes(ANet n) =
   };
 
 set[Message] checkVarOccursTwice(AIntRule ir) =
-  { error("Variable \'<name>\' does not occur twice", ir.src)
-  | / var(str name) := ir
+  { error("Variable \'<name>\' does not occur twice", v.src)
+  | / v:var(str name) := ir
   , size([() | / var(name) := ir]) != 2
   };
   
-set[Message] checkVarOccursTwice(AActivePair ar) =
-  { error("Variable \'<name>\' does not occur twice", ar.src)
-  | / var(str name) := ar
-  , size([() | / var(name) := ar]) != 2
+set[Message] checkVarsOccurTwice(list[AActivePair] ars) =
+  { error("Variable \'<name>\' does not occur twice", v.src)
+  | / v:var(str name) := ars
+  , size([() | / var(name) := ars]) != 2
   };
 
 set[Message] checkSymbolArity(ANet n) =
